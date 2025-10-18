@@ -34,10 +34,10 @@ public class OrderService {
 
             // Validación de existencia del café.
             if (cafeOptional.isEmpty()) {
-                throw new RuntimeException("El café con ID " + item.getCafeId() + " no existe en el menú.");
+                throw new NotFoundException("El café con ID " + item.getCafeId() + " no existe en el menú.");
             }
             Cafe cafe = cafeOptional.get();
-            
+
             // Suma el total del precio por la cantidad solicitada.
             totalPedido += cafe.getPrecio() * item.getCantidad();
         }
@@ -45,6 +45,21 @@ public class OrderService {
         // Crea y guarda la entidad Order con el total calculado.
         Order nuevaOrden = new Order(totalPedido);
         return orderRepository.save(nuevaOrden);
+    }
+    //Funcionalidad Barista/Gerente: Obtiene una orden específica por su ID.
+
+    public Order GetOrderById(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Orden con ID " + id + " no encontrada."));
+    }
+
+    //Funcionalidad Barista/Gerente: Actualiza el estado de una orden.
+
+    public Order updateStateOrder(Long id, String nuevoEstado) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Orden con ID " + id + " no encontrada para actualizar estado."));
+        order.setEstado(nuevoEstado);
+        return orderRepository.save(order);
     }
 
     //Obtencion de todas las órdenes del sistema (para el rol de Gerente/Barista).

@@ -18,30 +18,47 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    /**
-     * Endpoint: POST /api/ordenes
-     * Permitira al cliente realizar un nuevo pedido.
-     * El cuerpo de la petición espera una lista de ItemPedidoDTO.
-     */
-
+    // [ENDPOINT CLIENTE] POST /api/ordenes: Realiza un nuevo pedido
     @PostMapping
     public ResponseEntity<Order> realizarPedido(@Valid @RequestBody List<ItemOrderDTO> items) {
         try {
+            if (items == null || items.isEmpty()) {
+                return new ResponseEntity(
+                        "La lista de ítems del pedido no puede estar vacía.",
+                        HttpStatus.BAD_REQUEST
+                );
+            }
             Order ordenCreada = orderService.crearOrden(items);
-            // Si la orden se crea exitosamente.
             return new ResponseEntity<>(ordenCreada, HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            // Manejo de errores si no se encuentra un café.
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    /**
-     * Endpoint: GET /api/ordenes
-     * Permitira al gerente/barista obtener todas las órdenes realizadas
-     */
+
+    // [ENDPOINT GERENTE/BARISTA] GET /api/orders: Obtiene listado de todas las órdenes
     @GetMapping
     public ResponseEntity<List<Order>> obtenerTodasLasOrdenes() {
         List<Order> ordenes = orderService.obtenerTodasLasOrdenes();
         return new ResponseEntity<>(ordenes, HttpStatus.OK);
+    }
+
+    // [ENDPOINT GERENTE/BARISTA] GET /api/orders/{id}: Obtiene una orden específica por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Order> GetOrderById(@PathVariable Long id) {
+        Order orden = orderService.GetOrderById(id);
+        return new ResponseEntity<>(orden, HttpStatus.OK);
+    }
+
+    // [ENDPOINT BARISTA] PUT /api/orders/{id}/estado: Actualiza el estado de la orden
+    @PutMapping("/{id}/state")
+    public ResponseEntity<Order> updateState(
+            @PathVariable Long id,
+            @RequestBody String newState) {
+
+        // Se limpia la cadena y se convierte a mayúsculas (ej: "completaDO" -> "COMPLETADO")
+        String estadoLimpio = newState.trim().toUpperCase();
+        Order ordenActualizada = orderService.updateStateOrder(id, estadoLimpio);
+
+        return new ResponseEntity<>(ordenActualizada, HttpStatus.OK);
     }
 }

@@ -21,7 +21,7 @@ public class CafeService {
 
     //Lógica de Negocio: Obtencion de la lista completa del menú de cafés.
     public List<Cafe> obtenerMenu() {
-        // Usamos el método findAll() proporcionado por JpaRepository.
+
         return cafeRepository.findAll();
     }
 
