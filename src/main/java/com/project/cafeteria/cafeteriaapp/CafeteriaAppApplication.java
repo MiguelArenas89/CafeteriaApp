@@ -16,8 +16,6 @@ public class CafeteriaAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(CafeteriaAppApplication.class, args);
     }
-
-    // Usamos @Bean y CommandLineRunner para ejecutar código al inicio de la app.
     @Bean
     public CommandLineRunner inicializarMenu(CafeRepository cafeRepository) {
         return args -> {
@@ -30,9 +28,8 @@ public class CafeteriaAppApplication {
                     new Cafe("Mocaccino", 10000.00)
             );
 
-            // Guardado de todos los cafés en la base de datos
             cafeRepository.saveAll(menuInicial);
-            System.out.println("--- MENÚ INICIAL CARGADO EN LA BASE DE DATOS H2 ---");
+            System.out.println("--- MENU CARGADO EN LA BASE DE DATOS ---");
         };
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")// ruta base para todos los métodos de este controlador
+@RequestMapping("/api/orders")// ruta base para todos los metodos de este controlador
 public class OrderController {
     private final OrderService orderService;
 
@@ -55,7 +55,6 @@ public class OrderController {
             @PathVariable Long id,
             @RequestBody String newState) {
 
-        // Se limpia la cadena y se convierte a mayúsculas (ej: "completaDO" -> "COMPLETADO")
         String estadoLimpio = newState.trim().toUpperCase();
         Order ordenActualizada = orderService.updateStateOrder(id, estadoLimpio);
 

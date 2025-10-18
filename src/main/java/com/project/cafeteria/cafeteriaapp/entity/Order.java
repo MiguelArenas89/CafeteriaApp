@@ -8,31 +8,31 @@ import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "orders") // "order" es una palabra reservada en SQL, por eso usamos "orders".
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Campo para guardar el total a pagar.
+    //  guardar el total a pagar
     private double total;
 
-    // Campo para guardar el estado del pedido ("PENDIENTE", "EN PREPARACIÓN", "LISTO").
+    // estado del pedido ("PENDIENTE", "PREPARANDO", "LISTO")
     private String estado;
 
-    // Campo para registrar la fecha y hora del pedido.
+    // registra la fecha y hora del pedido
     private LocalDateTime fechaCreacion;
 
-    // Constructor vacío requerido por JPA.
+    // constructo vacio requerido por JPA
     public Order() {
-        // Inicialicion del estado y la fecha al crear la orden.
+        // inicialicion del estado y la fecha al crear la orden
         this.estado = "PENDIENTE";
         this.fechaCreacion = LocalDateTime.now();
     }
 
-    // Constructor simple para inicializar el total.
+    // constructo simple para inicializar el total
     public Order(double total) {
-        this(); // Llamada al constructor por defecto para inicializar estado y fecha.
+        this(); // llamada al constructoo por defecto para inicializar estado y fecha
         this.total = total;
     }
 
