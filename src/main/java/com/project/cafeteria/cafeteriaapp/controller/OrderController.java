@@ -3,14 +3,14 @@ package com.project.cafeteria.cafeteriaapp.controller;
 import com.project.cafeteria.cafeteriaapp.dto.ItemOrderDTO;
 import com.project.cafeteria.cafeteriaapp.entity.Order;
 import com.project.cafeteria.cafeteriaapp.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-// ruta base para todos los métodos de este controlador
-@RequestMapping("/api/orders")
+@RequestMapping("/api/orders")// ruta base para todos los métodos de este controlador
 public class OrderController {
     private final OrderService orderService;
 
@@ -25,7 +25,7 @@ public class OrderController {
      */
 
     @PostMapping
-    public ResponseEntity<Order> realizarPedido(@RequestBody List<ItemOrderDTO> items) {
+    public ResponseEntity<Order> realizarPedido(@Valid @RequestBody List<ItemOrderDTO> items) {
         try {
             Order ordenCreada = orderService.crearOrden(items);
             // Si la orden se crea exitosamente.

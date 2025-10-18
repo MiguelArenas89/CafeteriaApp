@@ -2,7 +2,7 @@ package com.project.cafeteria.cafeteriaapp.service;
 
 import com.project.cafeteria.cafeteriaapp.entity.Cafe;
 import com.project.cafeteria.cafeteriaapp.repository.CafeRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

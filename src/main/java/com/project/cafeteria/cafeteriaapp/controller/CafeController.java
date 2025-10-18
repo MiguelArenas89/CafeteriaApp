@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// @RestController es una combinación de @Controller y @ResponseBody.
-// Indica que la clase maneja peticiones HTTP y que los métodos devuelven datos (no vistas).
-@RestController
-// @RequestMapping define la ruta base para todos los métodos de este controlador.
-@RequestMapping("/api/menu")
+@RestController // @RestController es una combinación de @Controller y @ResponseBody.
+@RequestMapping("/api/menu") // @RequestMapping define la ruta base para todos los métodos de este controlador.
 public class CafeController {
 
     // Inyectamos el servicio para acceder a la lógica de negocio.
@@ -25,8 +22,7 @@ public class CafeController {
 
     /**
      * Endpoint: GET /api/menu
-     * Propósito: Permite al cliente obtener la lista completa del menú.
-     * @return ResponseEntity con la lista de Cafes y un estado HTTP 200 (OK).
+     * Permite al cliente obtener la lista completa del menú.
      */
     @GetMapping
     public ResponseEntity<List<Cafe>> obtenerMenuCompleto() {
@@ -37,10 +33,9 @@ public class CafeController {
 
     /**
      * Endpoint: POST /api/menu
-     * Propósito: Permite al Gerente agregar un nuevo café al menú.
-     * @param cafe El objeto Cafe recibido en el cuerpo de la petición JSON.
-     * @return ResponseEntity con el objeto Cafe guardado y un estado HTTP 201 (Created).
+     * Permite al Gerente agregar un nuevo café al menú.
      */
+
     @PostMapping
     public ResponseEntity<Cafe> agregarCafe(@RequestBody Cafe cafe) {
         // Llamamos al servicio para guardar el nuevo café.

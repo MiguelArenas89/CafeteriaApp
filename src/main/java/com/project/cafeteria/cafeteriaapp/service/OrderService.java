@@ -3,6 +3,7 @@ package com.project.cafeteria.cafeteriaapp.service;
 import com.project.cafeteria.cafeteriaapp.dto.ItemOrderDTO;
 import com.project.cafeteria.cafeteriaapp.entity.Cafe;
 import com.project.cafeteria.cafeteriaapp.entity.Order;
+import com.project.cafeteria.cafeteriaapp.exceptions.NotFoundException;
 import com.project.cafeteria.cafeteriaapp.repository.CafeRepository;
 import com.project.cafeteria.cafeteriaapp.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,19 @@ public class OrderService {
     //Procesa una lista de ItemsOrderDTO, calcula el total y guarda la nueva Orden.
     public Order crearOrden(List<ItemOrderDTO> items) {
         double totalPedido = 0.0;
+
         // Itera sobre cada ítem en el pedido para calcular el total.
         for (ItemOrderDTO item : items) {
+
             // Busca el café en la base de datos usando el ID del DTO.
             Optional<Cafe> cafeOptional = cafeRepository.findById(item.getCafeId());
+
             // Validación de existencia del café.
             if (cafeOptional.isEmpty()) {
                 throw new RuntimeException("El café con ID " + item.getCafeId() + " no existe en el menú.");
             }
             Cafe cafe = cafeOptional.get();
+            
             // Suma el total del precio por la cantidad solicitada.
             totalPedido += cafe.getPrecio() * item.getCantidad();
         }
