@@ -16,45 +16,36 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CafeRepository cafeRepository;
 
-    // Inyección de dependencias para los repositorios
     public OrderService(OrderRepository orderRepository, CafeRepository cafeRepository) {
         this.orderRepository = orderRepository;
         this.cafeRepository = cafeRepository;
     }
 
-    //Procesa una lista de ItemsOrderDTO, calcula el total y guarda la nueva Orden.
     public Order crearOrden(List<ItemOrderDTO> items) {
         double totalPedido = 0.0;
 
-        // Itera sobre cada ítem en el pedido para calcular el total.
         for (ItemOrderDTO item : items) {
 
-            // Busca el café en la base de datos usando el ID del DTO.
             Optional<Cafe> cafeOptional = cafeRepository.findById(item.getCafeId());
 
-            // Validación de existencia del café.
             if (cafeOptional.isEmpty()) {
                 throw new NotFoundException("El café con ID " + item.getCafeId() + " no existe en el menú.");
             }
             Cafe cafe = cafeOptional.get();
 
-            // Suma el total del precio por la cantidad solicitada.
             totalPedido += cafe.getPrecio() * item.getCantidad();
         }
 
-        // Crea y guarda la entidad Order con el total calculado.
         Order nuevaOrden = new Order(totalPedido);
         return orderRepository.save(nuevaOrden);
     }
-    //Funcionalidad Barista/Gerente: Obtiene una orden específica por su ID.
-
+    //obtencion de una orden por su ID
     public Order GetOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Orden con ID " + id + " no encontrada."));
     }
 
-    //Funcionalidad Barista/Gerente: Actualiza el estado de una orden.
-
+    //actualizar el estado de una orden
     public Order updateStateOrder(Long id, String nuevoEstado) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Orden con ID " + id + " no encontrada para actualizar estado."));
@@ -62,7 +53,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    //Obtencion de todas las órdenes del sistema (para el rol de Gerente/Barista).
+    //obtencion de todas las ordenes del sistema
     public List<Order> obtenerTodasLasOrdenes() {
         return orderRepository.findAll();
     }

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // Manejo de excepciones personalizadas NotFoundException
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    // Manejo de errores de validación de argumentos
+    // manejo de errores y validacion de argumentos
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -55,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("status", status.value());
         body.put("error", "Error de Validación de Datos");
 
-        // Recoleccion de todos los mensajes de error de los campos que fallaron
+        // recoleccion de todos los mensajes de error de los campos que fallaron
         List<String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.toList());
